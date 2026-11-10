@@ -1,0 +1,2 @@
+data_folder: "/media/fialamatous/Elements SE/obcevkostce_data/"
+connection: "postgres://ovk_writer:obcovackatojehracka@localhost:5432/obcevkostce_revival"
