@@ -10,7 +10,8 @@
 #           (e.g. employed in a sector per all employed).
 #
 # Every indicator of every configured dataset must appear here; the loader
-# refuses to guess.
+# refuses to guess. Quote codes that YAML could read as numbers ("5758_5" would
+# otherwise become 57585).
 
 rules:
   # ------------------------------------------------------------ population
@@ -68,7 +69,7 @@ rules:
   - note: thousands CZK -> per inhabitant (end of year)
     agg: SUM
     norm: 2406K
-    codes: [5761, 5761_1, 5761_2, 5761_3, 5761_4, 5758, 5758_5, 5758_6, 5762]
+    codes: ["5761", "5761_1", "5761_2", "5761_3", "5761_4", "5758", "5758_5", "5758_6", "5762"]
 
   # ------------------------------------------- businesses, housing, services
   - note: stocks at a date -> per inhabitant (end of year)

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -13,10 +14,19 @@ HERE = Path(__file__).resolve().parent
 AGGREGATIONS = {"SUM", "WEIGHTED_MEAN", "MEAN", "NONE"}
 
 
+# YAML 1.1 reads 1_2 as the integer 12; such codes must be quoted.
+UNQUOTED_UNDERSCORE = re.compile(r"(?<![\w\"'])\d+_\d+(?![\w\"'])")
+
+
 def load_rules() -> dict[str, dict]:
     """{code: {agg, norm, weight}} with 'self' resolved."""
     rules: dict[str, dict] = {}
-    doc = yaml.safe_load((HERE / "indicators.yaml").read_text(encoding="utf-8"))
+    text = (HERE / "indicators.yaml").read_text(encoding="utf-8")
+    for n, line in enumerate(text.splitlines(), 1):
+        code_part = line.split("#", 1)[0]
+        if "note:" not in code_part and UNQUOTED_UNDERSCORE.search(code_part):
+            raise ValueError(f"indicators.yaml:{n}: quote codes like {UNQUOTED_UNDERSCORE.search(code_part).group()}")
+    doc = yaml.safe_load(text)
     for group in doc["rules"]:
         agg = group["agg"]
         if agg not in AGGREGATIONS:
@@ -24,6 +34,8 @@ def load_rules() -> dict[str, dict]:
         if (agg == "WEIGHTED_MEAN") != ("weight" in group):
             raise ValueError(f"weight is required for, and only for, WEIGHTED_MEAN: {group}")
         for code in group["codes"]:
+            if not isinstance(code, (str, int)) or isinstance(code, bool):
+                raise ValueError(f"bad indicator code {code!r}")
             code = str(code)
             if code in rules:
                 raise ValueError(f"indicator {code} has two rules")

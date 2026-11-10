@@ -130,3 +130,10 @@ def test_choose_selection_skips_forbidden_dimension():
         "pravidlaVyberu": {"zakazaneKombinace": [["UZALL", "POHL2"]], "povinneDimenze": ["VUZEMI"]}}
     sel = choose_selection(sada, {})
     assert (sel.territory, sel.orp, sel.time, sel.other) == ("UZALL", "Uz4A", ["CasR"], {})
+
+
+def test_rules_cover_codes_with_underscores_as_text():
+    from ingest.czso.indicators import load_rules
+    rules = load_rules()
+    assert "5758_5" in rules and "57585" not in rules
+    assert rules["5758_5"]["agg"] == "SUM" and rules["5758_5"]["norm"] == "2406K"
