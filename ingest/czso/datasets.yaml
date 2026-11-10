@@ -1,0 +1,93 @@
+# ČSÚ DataStat datasets with municipality-level data that we ingest.
+#
+# tier: when the same series/municipality/period is published by several
+#   datasets, the lowest tier wins (final < secondary < preliminary < planning).
+# Optional per-dataset overrides (normally derived from the catalogue):
+#   territory: <dimension variant code>   main territorial variant
+#   dims: {<TYPE>: <variant code>}        variant to use for a dimension type
+#   skip_dims: [<TYPE>, ...]              leave a dimension at its total
+#   time: [<variant code>, ...]           time variants to download
+
+tiers: {final: 0, secondary: 1, preliminary: 2, planning: 3}
+
+datasets:
+  # --- population and movement
+  OBY01B01: {tier: final}
+  OBY02A: {tier: final}
+  OBY02E: {tier: final}
+  OBY02F: {tier: final}
+  OBY06A: {tier: final}
+  OBY02FGEN: {tier: secondary}
+  OBY01PDOB: {tier: preliminary}
+  # --- municipal budgets
+  FIN01A: {tier: final}
+  # --- businesses (annual; quarterly RES*QOBCE carry the same indicators)
+  RES01ROBCE: {tier: final}
+  RES02ROBCE: {tier: final}
+  RES03ROBCE: {tier: final}
+  RES04ROBCE: {tier: final}
+  # --- land, housing, social services, tourism
+  RSO03A: {tier: final}
+  STAV799: {tier: final}
+  SZB07: {tier: final}
+  CRU01ROBCE: {tier: final}
+  CRU02ROBCE: {tier: final}
+  CRU02KR: {tier: secondary}
+  # --- census
+  SLD005A: {tier: secondary}
+  SLD0100: {tier: secondary}
+  SLDOBM01: {tier: final}
+  SLDOBM02: {tier: final}
+  SLDOBM15: {tier: final}
+  SLDOBO02: {tier: final}
+  SLDOBO03: {tier: secondary}
+  SLDOBO07: {tier: final}
+  SLDOBO12: {tier: final}
+  SLDOBO15: {tier: final}
+  SLDZOB01: {tier: secondary}
+  SLDZOB03: {tier: secondary}
+  SLDZOB04: {tier: secondary}
+  SLDZOB08: {tier: final}
+  SLDZOB10: {tier: final}
+  SLDZOB11: {tier: final}
+  SLDZOB12: {tier: final}
+  SLDZOB13: {tier: secondary}
+  SLDZOB14: {tier: secondary}
+  SLDZOB15: {tier: final}
+  SLDZOB16: {tier: final}
+  # --- elections
+  VOLEP02: {tier: final}
+  VOLEP201902: {tier: final}
+  VOLEP202402: {tier: final}
+  VOLKR201602: {tier: final}
+  VOLKR202002: {tier: final}
+  VOLKR202402: {tier: final}
+  VOLOB02: {tier: final}
+  VOLOB03: {tier: final}
+  VOLOB04: {tier: final}
+  VOLOB202602: {tier: final}
+  VOLOB202603: {tier: final}
+  VOLOB202604: {tier: final}
+  VOLPR02: {tier: final}
+  VOLPR2018: {tier: final}
+  VOLPR2023: {tier: final}
+  VOLPS03: {tier: final}
+  VOLPS201702: {tier: final}
+  VOLPS202102: {tier: final}
+  VOLPS202502: {tier: final}
+  VOLSE201601: {tier: final}
+  VOLSE201701: {tier: final}
+  VOLSE201702: {tier: final}
+  VOLSE201801: {tier: final}
+  VOLSE202001: {tier: final}
+  VOLSE202201: {tier: final}
+  VOLSE202401: {tier: final}
+  VOLSE202601: {tier: final}
+  # --- planning-data compilation (overlaps the datasets above)
+  REGUAP: {tier: planning}
+
+# Not ingested, and why:
+#   WADMUPCRVN  marked as a test dataset by ČSÚ
+#   RSO05       values are codes of administrative offices, not measures
+#   OBY02D      five-year age groups are not published for municipalities
+#   RES*QOBCE   quarterly versions of the annual RES*ROBCE datasets

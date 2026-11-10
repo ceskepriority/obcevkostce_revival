@@ -1,0 +1,183 @@
+# Aggregation and normalisation rules for ČSÚ indicators (by ČSÚ indicator code;
+# the database id is "czso.<code>").
+#
+#   agg     how municipal values combine into a group (SO ORP, kraj, ...):
+#           SUM | WEIGHTED_MEAN | MEAN | NONE
+#   weight  for WEIGHTED_MEAN: the indicator that is the real denominator
+#   norm    indicator to divide by for a comparable figure (per inhabitant, per
+#           hectare, per worker ...); absent = not normalisable.
+#           norm equal to the indicator itself means "share of its own total"
+#           (e.g. employed in a sector per all employed).
+#
+# Every indicator of every configured dataset must appear here; the loader
+# refuses to guess.
+
+rules:
+  # ------------------------------------------------------------ population
+  - note: population stock; the base for everything else
+    agg: SUM
+    codes: [9379W, 2406K, 2406P3]
+  - note: population by sex/age -> share of total population
+    agg: SUM
+    norm: self
+    codes: [2406P, 9379, 2406K2]
+  - note: demographic events during the year -> per mid-year inhabitant
+    agg: SUM
+    norm: 9379W
+    codes: [4355ZN, 5393, 5401, 5402, 5402W, 5399, 5396, 5397]
+  - note: arrivals and departures cannot be summed - a move between two
+      municipalities of the same group is not migration for the group
+      (confirmed against ČSÚ's SO ORP figures); net migration (5402) can
+    agg: NONE
+    norm: 9379W
+    codes: [5403, 5404]
+  - note: rates per 1 000 inhabitants (a ratio cannot be summed)
+    agg: WEIGHTED_MEAN
+    weight: 9379W
+    codes: [5416, 5417, 5418, 5424, 5425, 5421, 5420, 5414, 5415]
+  - note: age shares and average age -> weighted by population
+    agg: WEIGHTED_MEAN
+    weight: 2406K
+    codes: [2406VP014, 2406VP1564, 2406VP65AV, 5436]
+  - note: index stáří = 65+ / 0-14 -> weighted by population 0-14
+    agg: WEIGHTED_MEAN
+    weight: 2406UAP904
+    codes: [5422]
+  - note: dependency indexes = (young and/or old) / 15-64 -> weighted by population 15-64
+    agg: WEIGHTED_MEAN
+    weight: 2406UAP905
+    codes: [9892, 9956, 9959]
+  - note: a median of a group cannot be derived from medians of its parts
+    agg: NONE
+    codes: [3475]
+
+  # ---------------------------------------------------------------- census
+  - note: census counts by category -> share of their own total
+    agg: SUM
+    norm: self
+    codes: [3162SLDB, 3162, U_3162, 3162SLDB15, 3162F]
+  - note: employed by sector/occupation/status -> per employed person
+    agg: SUM
+    norm: self
+    codes: [3162Z]
+  - agg: WEIGHTED_MEAN
+    weight: 3162SLDB
+    codes: [2407]
+
+  # --------------------------------------------------------------- budgets
+  - note: thousands CZK -> per inhabitant (end of year)
+    agg: SUM
+    norm: 2406K
+    codes: [5761, 5761_1, 5761_2, 5761_3, 5761_4, 5758, 5758_5, 5758_6, 5762]
+
+  # ------------------------------------------- businesses, housing, services
+  - note: stocks at a date -> per inhabitant (end of year)
+    agg: SUM
+    norm: 2406K
+    codes: [4958_reg, 4958_akt, 5457, 2657, 2658, 2662, 6098H, 6096H]
+  - note: flows during the year -> per mid-year inhabitant
+    agg: SUM
+    norm: 9379W
+    codes: [3103, 2654, 2655]
+  - note: average nights per guest -> weighted by guests
+    agg: WEIGHTED_MEAN
+    weight: 2654
+    codes: [5443]
+
+  # ------------------------------------------------------------------ land
+  - note: hectares by land type -> share of total area
+    agg: SUM
+    norm: self
+    codes: [4582]
+  - agg: WEIGHTED_MEAN
+    weight: 4582
+    codes: [4582SV]
+
+  # ------------------------------------------------------------- elections
+  - note: precincts; registered voters
+    agg: SUM
+    codes: [498, 495]
+  - note: issued envelopes -> per registered voter (= turnout)
+    agg: SUM
+    norm: 495
+    codes: [496]
+  - note: votes, mandates, candidates by party/age/sex -> share of their own total
+    agg: SUM
+    norm: self
+    codes: [483, 505ZM, 484, 505ZC]
+  - note: turnout % -> weighted by registered voters
+    agg: WEIGHTED_MEAN
+    weight: 495
+    codes: [497]
+  - note: share of valid votes % -> weighted by issued envelopes (ČSÚ divides by
+      returned envelopes, which are not published here; near-identical)
+    agg: WEIGHTED_MEAN
+    weight: 496
+    codes: [5542]
+  - note: party/candidate % of valid votes -> weighted by valid votes
+    agg: WEIGHTED_MEAN
+    weight: 483
+    codes: [483P1, 483P2]
+  - note: share of mandates in % -> weighted by mandates
+    agg: WEIGHTED_MEAN
+    weight: 505ZM
+    codes: [505ZM01]
+  - agg: WEIGHTED_MEAN
+    weight: 484
+    codes: [5737KC]
+  - agg: WEIGHTED_MEAN
+    weight: 505ZC
+    codes: [5736ZC]
+
+  # ------------------------------------ REGUAP (územně analytické podklady)
+  - agg: SUM
+    codes: [2406UAP891, 4582UAP1137, 3971UAP921, 3971UAP922, 3971UAP923]
+  - note: people, events, dwellings, beds, budgets -> per inhabitant
+    agg: SUM
+    norm: 2406UAP891
+    codes: [5401UAP892, 5402UAP893, 5399UAP894, 2406UAP904, 2406UAP905, 2406UAP906,
+            4355UAP1131, 5393UAP1132,
+            3103UAP991, 3113UAP992, 5457UAP1031, 2658UAP1032,
+            5761UAP941O, 5761UAP9402O, 5761UAP943O, 5761UAP944O, 5761UAP945O,
+            5758UAP946, 5758UAP947O, 5758UAP948O, 5762UAP949O,
+            5761UAPK, 5761UAP942K, 5761UAP943K, 5761UAP944K, 5761UAP945K,
+            5758UAP946K, 5758UAP947K, 5758UAP948K, 5762UAP949]
+  - note: arrivals and departures cannot be summed (see 5403, 5404)
+    agg: NONE
+    norm: 2406UAP891
+    codes: [5403UAP1133, 5404UAP1134]
+  - note: jobseekers -> per inhabitant aged 15-64 (the population they come from)
+    agg: SUM
+    norm: 2406UAP905
+    codes: [5973UAP962, 5973UAP963, 5973UAP964, 5973UAP965]
+  - note: share of unemployed persons = jobseekers / population 15-64 (ČSÚ takes the
+      population at a slightly different date, so a group value recomputed this
+      way can differ from the published one by up to about 0.2 percentage points)
+    agg: WEIGHTED_MEAN
+    weight: 2406UAP905
+    codes: [5973UAP961]
+  - agg: WEIGHTED_MEAN
+    weight: 2406UAP891
+    codes: [2406UAP901, 2406UAP902, 2406UAP903, 5436UAP1135]
+  - agg: WEIGHTED_MEAN
+    weight: 2406UAP904
+    codes: [5422UAP1136]
+  - note: hectares by land type -> share of total area
+    agg: SUM
+    norm: 4582UAP1137
+    codes: [4582UAP1138, 4582UAP1139, 4582UAP11310, 4582UAP11311, 4582UAP11312,
+            4582UAP11313, 4582UAP11314, 4582UAP11315, 4582UAP11316, 4582UAP11317,
+            4582UAP11318, 4582UAP11319]
+  - note: land shares "z celkové výměry" -> weighted by total area
+    agg: WEIGHTED_MEAN
+    weight: 4582UAP1137
+    codes: [4582UAP105, 4582UAP1081, 4582UAP1082, 4582UAP1083, 4582UAP1084,
+            4582UAP1085, 4582UAP1086, 4582UAP1087, 4582UAP1088, 4582UAP1089,
+            4582UAP10810, 4582UAP10811]
+  - note: land shares "ze zemědělské půdy" -> weighted by agricultural area
+    agg: WEIGHTED_MEAN
+    weight: 4582UAP1138
+    codes: [4582UAP1061, 4582UAP1062, 4582UAP1063, 4582UAP1064, 4582UAP1065, 4582UAP1066]
+  - note: ratio of stable to unstable areas; components are not published
+    agg: NONE
+    codes: [5594UAP11320]

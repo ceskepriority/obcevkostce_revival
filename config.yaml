@@ -1,2 +1,3 @@
 data_folder: "/media/fialamatous/Elements SE/obcevkostce_data/"
 connection: "postgres://ovk_writer:obcovackatojehracka@localhost:5432/obcevkostce_revival"
+temp_tablespace: "ovk_big"  # staging tables during loads; ignored where it does not exist
