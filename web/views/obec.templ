@@ -1,0 +1,69 @@
+package views
+
+import (
+	"fmt"
+
+	"obcevkostce/web/dash"
+	"obcevkostce/web/obce"
+)
+
+templ Selection(info *obce.Info, sel []obce.Resolved) {
+	<div class="selection">
+		Srovnání [<a href={ templ.SafeURL(fmt.Sprintf("/obec/%d/vyber?c=%s", info.ID, token(sel))) }>změnit</a>]:
+		<ol>
+			for _, s := range sel {
+				<li>
+					{ s.Label } <span class="muted">({ members(s) })</span>
+					if s.Kind != 'o' {
+						@MembersToggle(s.Token())
+					}
+				</li>
+			}
+		</ol>
+	</div>
+}
+
+templ Menu(info *obce.Info, sel []obce.Resolved) {
+	@Layout(info.Name, false) {
+		<p><a href="/">← jiná obec</a></p>
+		<h1>{ info.Name }</h1>
+		@Facts(info)
+		@Selection(info, sel)
+		<h2>Témata</h2>
+		<ul>
+			<li><a href={ obecURL(info.ID, sel, "demografie") }>Demografie</a></li>
+			<li class="muted">Rozpočet (brzy)</li>
+			<li class="muted">Bezpečnost (brzy)</li>
+			<li class="muted">Vzdělávání (brzy)</li>
+			<li class="muted">Zdravotnictví (brzy)</li>
+			<li class="muted">Životní prostředí (brzy)</li>
+		</ul>
+		<h2>Data</h2>
+		<p><a class="go" href={ obecURL(info.ID, sel, "data.xlsx") }>⬇ STÁHNOUT VŠECHNA DATA (EXCEL)</a></p>
+		<p class="muted">List na ukazatel, řádek na rok, sloupec na obec a každou srovnávací skupinu.</p>
+	}
+}
+
+templ Dashboard(info *obce.Info, sel []obce.Resolved, pairs []dash.Pair) {
+	@Layout(info.Name+" · Demografie", true) {
+		<p><a href={ obecURL(info.ID, sel, "") }>← { info.Name }</a></p>
+		<h1>{ info.Name }: demografie</h1>
+		@Facts(info)
+		@Selection(info, sel)
+		<p class="muted">
+			Obsah:
+			for _, p := range pairs {
+				if p.Section != nil {
+					[<a href={ templ.SafeURL("#" + p.Section.ID) }>{ p.Section.Title }</a>]
+				}
+			}
+		</p>
+		for _, p := range pairs {
+			if p.Section != nil {
+				<h2 id={ p.Section.ID }>{ p.Section.Title }</h2>
+			}
+			<figure data-chart={ p.Chart }></figure>
+			<figure data-chart={ p.Compare } class="compare"></figure>
+		}
+	}
+}

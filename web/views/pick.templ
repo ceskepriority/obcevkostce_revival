@@ -1,0 +1,125 @@
+package views
+
+import (
+	"fmt"
+
+	"obcevkostce/web/obce"
+)
+
+templ Index(featured, random []obce.Obec) {
+	@Layout("Obce v kostce", false) {
+		<h1>Obce v kostce</h1>
+		<p><b>Obce v kostce</b> je nástroj, který shromažďuje veřejně dostupná data o všech obcích ČR.</p>
+		<ol>
+			<li>Vyberte si obec, která vás zajímá.</li>
+			<li>Vyberte si, s kým chcete data srovnávat: dejte čísla do kontextu sousedních obcí či regionu.</li>
+			<li>Stáhněte si svá data nebo si projděte tematické dashboardy.</li>
+		</ol>
+		<p class="muted">Nástroj je v demo verzi, zatím s pouze omezeným množstvím témat.</p>
+		<h2>1. Vyberte obec</h2>
+		<input
+			type="search"
+			name="q"
+			placeholder="název obce, např. Nové Město"
+			autofocus
+			autocomplete="off"
+			hx-get="/hledat/pick"
+			hx-trigger="input changed delay:200ms, search"
+			hx-target="#results"
+		/>
+		<ul id="results"></ul>
+		<p>
+			Například:
+			for i, o := range featured {
+				if i > 0 {
+					{ " · " }
+				}
+				<a href={ templ.SafeURL(fmt.Sprintf("/obec/%d/vyber", o.ID)) }>{ o.Name }</a>
+			}
+		</p>
+		<p>
+			Nebo namátkou:
+			for i, o := range random {
+				if i > 0 {
+					{ " · " }
+				}
+				<a href={ templ.SafeURL(fmt.Sprintf("/obec/%d/vyber", o.ID)) }>{ o.Label() }</a>
+			}
+			[<a href="/">jiné</a>]
+		</p>
+		<hr/>
+		<p class="muted">Dotazy směřujte na <a href="mailto:matous.fiala@ceskepriority.cz">matous.fiala@ceskepriority.cz</a>.</p>
+	}
+}
+
+// SearchResults: what a result does depends on mode — pick: open the obec;
+// add: add it to the comparison; member: add it to the custom group being built.
+templ SearchResults(mode, q string, list []obce.Obec) {
+	if len(list) == 0 && q != "" {
+		<li class="muted">nic nenalezeno</li>
+	}
+	for _, o := range list {
+		<li>
+			switch mode {
+				case "pick":
+					<a href={ templ.SafeURL(fmt.Sprintf("/obec/%d/vyber", o.ID)) }>{ o.Label() }</a>
+				case "add":
+					<button type="button" data-token={ fmt.Sprintf("o.%d", o.ID) } data-label={ o.Label() } x-on:click="add($el.dataset)">+</button> { o.Label() }
+				case "member":
+					<button type="button" data-id={ fmt.Sprint(o.ID) } data-label={ o.Label() } x-on:click="addMember($el.dataset)">+</button> { o.Label() }
+			}
+		</li>
+	}
+}
+
+templ Vyber(info *obce.Info, initial string, max int) {
+	@Layout(info.Name, false) {
+		<p><a href="/">← jiná obec</a></p>
+		<h1>{ info.Name }</h1>
+		@Facts(info)
+		<div x-data={ fmt.Sprintf("picker(%d, %s, %d)", info.ID, initial, max) }>
+			<h2>2. Srovnat s (každá položka = jedna čára v grafech, nejvýše { fmt.Sprint(max) })</h2>
+			<ol>
+				<template x-for="(it, i) in items" x-bind:key="it.token">
+					<li><span x-text="it.label"></span> <button type="button" x-on:click="remove(i)" title="odebrat">×</button></li>
+				</template>
+			</ol>
+			<p class="muted" x-show="items.length === 0">Nic nevybráno.</p>
+			<p class="warn" x-show="msg" x-text="msg"></p>
+			<h3>Návrhy</h3>
+			<ul class="plain">
+				for _, g := range info.Groups {
+					<li>
+						<label>
+							<input
+								type="checkbox"
+								data-token={ "g." + g.ID }
+								data-label={ g.Label() }
+								x-bind:checked={ fmt.Sprintf("has('g.%s')", g.ID) }
+								x-on:change="toggle($el)"
+							/>
+							{ g.Label() } <span class="muted">({ obce.ObceCount(g.Members) })</span>
+						</label>
+						@MembersToggle("g." + g.ID)
+					</li>
+				}
+			</ul>
+			<h3>Přidat jednotlivou obec</h3>
+			<input type="search" name="q" placeholder="hledat obec" autocomplete="off" hx-get="/hledat/add" hx-trigger="input changed delay:200ms, search" hx-target="next ul"/>
+			<ul class="plain"></ul>
+			<h3>Vytvořit vlastní skupinu obcí (sečte se do jedné čáry)</h3>
+			<p><input type="text" x-model="group.name" placeholder="název skupiny" maxlength="80"/></p>
+			<input type="search" name="q" placeholder="hledat obec do skupiny" autocomplete="off" hx-get="/hledat/member" hx-trigger="input changed delay:200ms, search" hx-target="next ul"/>
+			<ul class="plain"></ul>
+			<p>
+				Ve skupině (<span x-text="group.members.length"></span>):
+				<template x-for="(m, i) in group.members" x-bind:key="m.id">
+					<span class="chip"><span x-text="m.label"></span> <button type="button" x-on:click="group.members.splice(i, 1)">×</button></span>
+				</template>
+			</p>
+			<button type="button" x-on:click="saveGroup()" x-bind:disabled="!group.name.trim() || !group.members.length">uložit skupinu a přidat do srovnání</button>
+			<hr/>
+			<p><a class="go" x-bind:href="next()" x-show="items.length">POKRAČOVAT →</a></p>
+		</div>
+	}
+}

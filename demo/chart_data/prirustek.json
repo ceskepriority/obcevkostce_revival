@@ -1,0 +1,57 @@
+{
+  "id": "prirustek",
+  "data": "prirustek.csv",
+  "type": "bar",
+  "title": "Populační růst",
+  "subtitle": "Změna počtu obyvatel rozdělená na [přirozený přírůstek::Živě narození − zemřelí] a [čistou migraci::Přistěhovalí − vystěhovalí]",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "osoby",
+      "label": "Změna",
+      "unit": "os.",
+      "tab": "abs"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Změna",
+      "format": "percent",
+      "tab": "pct"
+    },
+    {
+      "type": "fill",
+      "field": "slozka",
+      "label": "Složka"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Základní údaje o stavu a pohybu obyvatel podle obcí a měst (OBY01B01, zveřejněno 26. 10. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY01B01"
+    }
+  ],
+  "data_note": "Podíl = změna / počet obyvatel k 1. 7.",
+  "options": {
+    "timeline": false
+  },
+  "last_updated": "2026-11-20",
+  "rows": 52,
+  "tabs": [
+    {
+      "id": "abs",
+      "label": "Osoby"
+    },
+    {
+      "id": "pct",
+      "label": "% obyvatel"
+    }
+  ]
+}

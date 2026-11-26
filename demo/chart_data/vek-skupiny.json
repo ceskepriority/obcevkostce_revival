@@ -1,0 +1,61 @@
+{
+  "id": "vek-skupiny",
+  "data": "vek-skupiny.csv",
+  "type": "line",
+  "title": "Věkové složení",
+  "subtitle": "Obyvatelé v hlavních věkových skupinách k 31. 12.",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Podíl",
+      "format": "percent",
+      "tab": "pct"
+    },
+    {
+      "type": "y",
+      "field": "osoby",
+      "label": "Počet obyvatel",
+      "tab": "abs"
+    },
+    {
+      "type": "colour",
+      "field": "skupina",
+      "label": "Věková skupina"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Počet obyvatel podle pohlaví a základních věkových skupin (OBY02E, zveřejněno 26. 08. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY02E"
+    }
+  ],
+  "data_note": "",
+  "options": {
+    "timeline": false,
+    "palette": [
+      "#6250d6",
+      "#eb6834",
+      "#0f9aa8"
+    ]
+  },
+  "last_updated": "2026-11-20",
+  "rows": 78,
+  "tabs": [
+    {
+      "id": "pct",
+      "label": "Podíl"
+    },
+    {
+      "id": "abs",
+      "label": "Osoby"
+    }
+  ]
+}

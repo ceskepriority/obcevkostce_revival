@@ -1,0 +1,36 @@
+/* Deliberately rough. The variables are the ones Charta's charts.css reads. */
+:root {
+  --bg: #fff; --bg-2: #eee; --line: #999; --text-primary: #000; --text-secondary: #222;
+  --text-muted: #666; --accent: #00e; --hover: #ff0;
+}
+body { margin: 0 auto; max-width: 920px; padding: 8px 16px 80px; background: var(--bg); color: #000;
+       font: 15px/1.45 ui-monospace, "DejaVu Sans Mono", Menlo, monospace; }
+header { border-bottom: 3px double #000; padding: 4px 0 6px; margin-bottom: 12px; }
+header a { font-weight: bold; letter-spacing: .15em; color: #000; text-decoration: none; }
+a { color: #00e; }
+h1 { font-size: 22px; text-transform: uppercase; margin: 16px 0 2px; }
+h2 { font-size: 15px; text-transform: uppercase; border-bottom: 1px dashed #000; margin: 32px 0 8px; }
+h3 { font-size: 15px; margin: 20px 0 4px; }
+input[type=search], input[type=text] { font: inherit; width: 100%; max-width: 440px; padding: 3px 5px; border: 1px solid #000; border-radius: 0; box-sizing: border-box; }
+button { font: inherit; border: 1px solid #000; background: #ddd; border-radius: 0; padding: 0 6px; cursor: pointer; }
+button:hover:not(:disabled) { background: var(--hover); }
+button:disabled { color: #888; cursor: not-allowed; }
+button.big { padding: 6px 12px; }
+ul.plain { list-style: none; padding-left: 0; }
+li { margin: 2px 0; }
+.muted { color: var(--text-muted); }
+.warn { background: #ff0; display: inline-block; }
+.chip { display: inline-block; border: 1px solid #000; padding: 0 4px; margin: 2px 4px 2px 0; }
+.go { display: inline-block; font-weight: bold; border: 2px solid #000; background: #ff0; color: #000; padding: 4px 12px; text-decoration: none; }
+hr { border: 0; border-top: 1px solid #000; margin: 24px 0; }
+figure { margin: 0; }
+figure.compare { border-left: 4px solid #000; padding-left: 12px; }
+.chart-card { margin: 32px 0 40px; }
+details.members { display: inline; }
+details.members summary { display: inline; cursor: pointer; color: #00e; list-style: none; }
+details.members summary::-webkit-details-marker { display: none; }
+details.members[open] summary { background: var(--hover); }
+.member-list { max-height: 260px; overflow: auto; border: 1px solid #000; margin: 4px 0 8px; padding: 4px 4px 4px 48px;
+               font-size: 13px; max-width: 520px; }
+.selection { margin: 1em 0; }
+.selection ol { margin: 4px 0; }

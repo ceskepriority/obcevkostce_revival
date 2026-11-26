@@ -1,0 +1,3 @@
+[submodule "lib/charta"]
+	path = lib/charta
+	url = https://github.com/MatousFiala/charta.git

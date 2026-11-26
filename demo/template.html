@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="cs">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{name}} · Obce v kostce</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="assets/site.css">
+        <style>
+            .facts { margin: 6px 0 8px; }
+            .facts p { margin: 2px 0; font-size: 17px; color: var(--text-muted); }
+            /* one column: each chart followed by its comparison, indented */
+            .pair { max-width: none; }
+            .chart-card.compare { margin-top: -36px; padding: 14px 0 0 18px; border-left: 3px solid var(--line); }
+            .chart-card.compare .chart-title { font-size: 18px; }
+        </style>
+        <link rel="stylesheet" href="../lib/charta/js/charts.css">
+        <script src="../lib/charta/js/vendor/d3.min.js"></script>
+        <script src="../lib/charta/js/vendor/plot.umd.min.js"></script>
+        <script type="module" src="assets/charts.js"></script>
+        <script type="module" src="assets/nav.js"></script>
+    </head>
+    <body class="has-sidenav">
+        <header class="site-header">
+            <div class="site-header-inner">
+                <a class="site-title" href="index.html">Obce v kostce</a>
+                <span class="site-tagline">Demografie</span>
+            </div>
+        </header>
+        <div class="page">
+            <nav class="sidenav" aria-label="Obsah">
+                <p class="sidenav-topic">{{name}}</p>
+                <ul>
+                    <li>
+                        <a href="#" class="current" aria-current="page">Demografie</a>
+                        <ul class="sidenav-sections" data-sections></ul>
+                    </li>
+                </ul>
+            </nav>
+            <main>
+                <p class="breadcrumb">Obyvatelstvo · kód obce {{code}}</p>
+                <h1>{{name}}</h1>
+                <div class="facts">
+{{facts}}
+                </div>
+
+{{charts}}
+            </main>
+        </div>
+        <footer class="site-footer">
+            <div class="site-footer-inner">Obce v kostce · demo · data ČSÚ</div>
+        </footer>
+    </body>
+</html>

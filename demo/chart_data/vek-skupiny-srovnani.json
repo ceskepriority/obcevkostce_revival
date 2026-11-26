@@ -1,0 +1,69 @@
+{
+  "id": "vek-skupiny-srovnani",
+  "data": "vek-skupiny-srovnani.csv",
+  "type": "line",
+  "title": "Věkové složení ve srovnání",
+  "subtitle": "Podíl obyvatel věkové skupiny k 31. 12., %",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "v0",
+      "label": "Podíl 0–14 let",
+      "format": "percent",
+      "tab": "v0"
+    },
+    {
+      "type": "y",
+      "field": "v1",
+      "label": "Podíl 15–64 let",
+      "format": "percent",
+      "tab": "v1"
+    },
+    {
+      "type": "y",
+      "field": "v2",
+      "label": "Podíl 65 a více let",
+      "format": "percent",
+      "tab": "v2"
+    },
+    {
+      "type": "linetype",
+      "field": "uzemi",
+      "label": "Území"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Počet obyvatel podle pohlaví a základních věkových skupin (OBY02E, zveřejněno 26. 08. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY02E"
+    }
+  ],
+  "data_note": "Srovnávací skupiny: 189 obcí s 5 000–14 999 obyvateli k 31. 12. 2025 a všech 704 obcí kraje (obě včetně obce Nové Město na Moravě). Hodnoty skupin jsou součty za jejich obce.",
+  "options": {
+    "timeline": false,
+    "y_zero": false
+  },
+  "last_updated": "2026-11-20",
+  "rows": 78,
+  "tabs": [
+    {
+      "id": "v1",
+      "label": "15–64 let"
+    },
+    {
+      "id": "v2",
+      "label": "65 a více let"
+    },
+    {
+      "id": "v0",
+      "label": "0–14 let"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "prirustek-srovnani",
+  "data": "prirustek-srovnani.csv",
+  "type": "line",
+  "title": "Populační růst ve srovnání",
+  "subtitle": "Na 1 000 obyvatel, 3letý klouzavý průměr",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "celkem",
+      "label": "Celkový přírůstek",
+      "unit": "‰",
+      "tab": "tot"
+    },
+    {
+      "type": "y",
+      "field": "prirozeny",
+      "label": "Přirozený přírůstek",
+      "unit": "‰",
+      "tab": "nat"
+    },
+    {
+      "type": "y",
+      "field": "migrace",
+      "label": "Čistá migrace",
+      "unit": "‰",
+      "tab": "mig"
+    },
+    {
+      "type": "linetype",
+      "field": "uzemi",
+      "label": "Území"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Základní údaje o stavu a pohybu obyvatel podle obcí a měst (OBY01B01, zveřejněno 26. 10. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY01B01"
+    }
+  ],
+  "data_note": "Míry jsou vyhlazené 3letým klouzavým průměrem (součet událostí za 3 roky / součet středních stavů). Srovnávací skupiny: 189 obcí s 5 000–14 999 obyvateli k 31. 12. 2025 a všech 704 obcí kraje (obě včetně obce Nové Město na Moravě). Hodnoty skupin jsou součty za jejich obce.",
+  "options": {
+    "timeline": false
+  },
+  "last_updated": "2026-11-20",
+  "rows": 72,
+  "tabs": [
+    {
+      "id": "tot",
+      "label": "Celkový přírůstek"
+    },
+    {
+      "id": "nat",
+      "label": "Přirozený přírůstek"
+    },
+    {
+      "id": "mig",
+      "label": "Čistá migrace"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "migrace-srovnani",
+  "data": "migrace-srovnani.csv",
+  "type": "line",
+  "title": "Míra čisté migrace podle věku ve srovnání",
+  "subtitle": "Saldo migrace na 1 000 obyvatel dané věkové skupiny, 3letý klouzavý průměr",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "v0",
+      "label": "Čistá migrace 0–14 let",
+      "unit": "‰",
+      "tab": "v0"
+    },
+    {
+      "type": "y",
+      "field": "v1",
+      "label": "Čistá migrace 15–64 let",
+      "unit": "‰",
+      "tab": "v1"
+    },
+    {
+      "type": "y",
+      "field": "v2",
+      "label": "Čistá migrace 65 a více let",
+      "unit": "‰",
+      "tab": "v2"
+    },
+    {
+      "type": "linetype",
+      "field": "uzemi",
+      "label": "Území"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Stěhování podle základních a pětiletých věkových skupin (OBY06A, zveřejněno 19. 06. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY06A"
+    },
+    {
+      "name": "ČSÚ",
+      "dataset": "Počet obyvatel podle pohlaví a základních věkových skupin (OBY02E, zveřejněno 26. 08. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY02E"
+    }
+  ],
+  "data_note": "Obyvatelé věkové skupiny = průměr stavů k 1. 1. a 31. 12. Míry jsou vyhlazené 3letým klouzavým průměrem (součet událostí za 3 roky / součet středních stavů). Srovnávací skupiny: 189 obcí s 5 000–14 999 obyvateli k 31. 12. 2025 a všech 704 obcí kraje (obě včetně obce Nové Město na Moravě). Hodnoty skupin jsou součty za jejich obce.",
+  "options": {
+    "timeline": false
+  },
+  "last_updated": "2026-11-20",
+  "rows": 72,
+  "tabs": [
+    {
+      "id": "v1",
+      "label": "15–64 let"
+    },
+    {
+      "id": "v2",
+      "label": "65 a více let"
+    },
+    {
+      "id": "v0",
+      "label": "0–14 let"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "zavislost",
+  "data": "zavislost.csv",
+  "type": "line",
+  "title": "Index závislosti",
+  "subtitle": "Počet [dětí::0–14 let] a [seniorů::65 a více let] na 100 obyvatel v produktivním věku (15–64 let), k 31. 12.",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "hodnota",
+      "label": "Na 100 osob 15–64 let"
+    },
+    {
+      "type": "colour",
+      "field": "index",
+      "label": "Závislost"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Počet obyvatel podle pohlaví a základních věkových skupin (OBY02E, zveřejněno 26. 08. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY02E"
+    }
+  ],
+  "data_note": "Vypočteno z počtu obyvatel podle základních věkových skupin. Dětská = (0–14) / (15–64), seniorská = (65+) / (15–64), celková = součet obou; vše × 100.",
+  "options": {
+    "timeline": false
+  },
+  "last_updated": "2026-11-20",
+  "rows": 78
+}

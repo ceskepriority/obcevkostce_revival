@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="cs">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Nové Město na Moravě · Obce v kostce</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="assets/site.css">
+        <style>
+            .facts { margin: 6px 0 8px; }
+            .facts p { margin: 2px 0; font-size: 17px; color: var(--text-muted); }
+            /* name and facts beside the town photo; stacked on narrow screens */
+            .intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+            .intro figure { flex: 0 0 300px; margin: 0; }
+            .intro img { display: block; width: 100%; height: auto; border-radius: 6px; }
+            .intro figcaption { margin-top: 4px; font-size: 12px; color: var(--text-muted); }
+            .intro figcaption a { color: inherit; }
+            @media (max-width: 640px) { .intro { flex-direction: column-reverse; } .intro figure { flex-basis: auto; width: 100%; } }
+            /* compact topic list */
+            .article-list li { padding: 6px 0; }
+            .article-list a { font-size: 17px; }
+            .article-list a.soon { color: var(--text-muted); font-weight: 500; cursor: default; text-decoration: none; }
+        </style>
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="site-header-inner">
+                <a class="site-title" href="index.html">Obce v kostce</a>
+            </div>
+        </header>
+        <div class="page">
+            <main>
+                <div class="intro">
+                    <div>
+                        <p class="breadcrumb">kód obce 596230</p>
+                        <h1>Nové Město na Moravě</h1>
+                        <div class="facts">
+                    <p>Město, 9 716 obyvatel (31. 12. 2025)</p>
+                    <p>Kraj Vysočina, SO ORP Nové Město na Moravě</p>
+                        </div>
+                    </div>
+                    <!-- demo: the photo is fixed for Nové Město na Moravě (title image of its cs.wikipedia article) -->
+                    <figure>
+                        <img src="assets/obec-596230.jpg" width="960" height="640" alt="Náměstí v Novém Městě na Moravě">
+                        <figcaption>Foto: <a href="https://commons.wikimedia.org/wiki/File:N%C3%A1m%C4%9Bst%C3%AD_(Nov%C3%A9_M%C4%9Bsto_na_Morav%C4%9B).JPG">Maxx, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a></figcaption>
+                    </figure>
+                </div>
+
+                <h2 style="margin-top: 32px">Témata</h2>
+                <ul class="article-list">
+                    <li><a href="demografie.html">Demografie</a></li>
+                    <li><a class="soon" aria-disabled="true">Rozpočet</a></li>
+                    <li><a class="soon" aria-disabled="true">Bezpečnost</a></li>
+                    <li><a class="soon" aria-disabled="true">Vzdělávání</a></li>
+                    <li><a class="soon" aria-disabled="true">Zdravotnictví</a></li>
+                    <li><a class="soon" aria-disabled="true">Životní prostředí</a></li>
+                </ul>
+            </main>
+        </div>
+        <footer class="site-footer">
+            <div class="site-footer-inner">Obce v kostce · demo · data ČSÚ</div>
+        </footer>
+    </body>
+</html>

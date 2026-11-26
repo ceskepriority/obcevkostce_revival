@@ -1,0 +1,44 @@
+{
+  "id": "obyvatele-srovnani",
+  "data": "obyvatele-srovnani.csv",
+  "type": "line",
+  "title": "Vývoj počtu obyvatel ve srovnání",
+  "subtitle": "Počet obyvatel k 31. 12., index (rok 2000 = 100)",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "index",
+      "label": "Index (2000 = 100)"
+    },
+    {
+      "type": "linetype",
+      "field": "uzemi",
+      "label": "Území"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Základní údaje o stavu a pohybu obyvatel podle obcí a měst (OBY01B01, zveřejněno 26. 10. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY01B01"
+    }
+  ],
+  "data_note": "Srovnávací skupiny: 189 obcí s 5 000–14 999 obyvateli k 31. 12. 2025 a všech 704 obcí kraje (obě včetně obce Nové Město na Moravě). Hodnoty skupin jsou součty za jejich obce.",
+  "options": {
+    "timeline": false,
+    "y_zero": false,
+    "annotations": [
+      {
+        "y": 100
+      }
+    ]
+  },
+  "last_updated": "2026-11-20",
+  "rows": 78
+}

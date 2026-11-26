@@ -1,0 +1,101 @@
+package views
+
+import (
+	"fmt"
+	"strings"
+
+	"obcevkostce/web/obce"
+)
+
+templ Layout(title string, charts bool) {
+	<!DOCTYPE html>
+	<html lang="cs">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ title } · Obce v kostce</title>
+			<link rel="stylesheet" href="/static/site.css"/>
+			if charts {
+				<link rel="stylesheet" href="/lib/charta/charts.css"/>
+				<script src="/lib/charta/vendor/d3.min.js"></script>
+				<script src="/lib/charta/vendor/plot.umd.min.js"></script>
+				<script type="module" src="/static/charts.js"></script>
+			}
+			<script src="/static/htmx.min.js"></script>
+			<script src="/static/picker.js"></script>
+			<script defer src="/static/alpine.min.js"></script>
+		</head>
+		<body>
+			<header><a href="/">OBCE V KOSTCE</a> <span class="muted">[prototyp]</span></header>
+			<main>
+				{ children... }
+			</main>
+		</body>
+	</html>
+}
+
+// Facts: "Město · kód 596230 · 9 716 obyvatel (31. 12. 2025) · Kraj Vysočina · SO ORP …"
+templ Facts(info *obce.Info) {
+	<p class="muted">{ strings.Join(FactLines(info), " · ") }</p>
+}
+
+// FactLines: the facts about the obec, also on the Info sheet of the export.
+func FactLines(info *obce.Info) []string {
+	out := []string{fmt.Sprintf("%s · kód %d", info.TypeLabel(), info.ID)}
+	if info.PopYear > 0 {
+		out = append(out, fmt.Sprintf("%s obyvatel (31. 12. %d)", fmtInt(info.Population), info.PopYear))
+	}
+	for _, typ := range []string{"kraj", "SO ORP"} {
+		if g, ok := info.Group(typ); ok {
+			out = append(out, g.Label())
+		}
+	}
+	return out
+}
+
+// MembersToggle: "(?)" that loads and shows the obce of a group when opened.
+templ MembersToggle(token string) {
+	<details class="members">
+		<summary title="seznam obcí">(?)</summary>
+		<div hx-get={ "/clenove/" + token } hx-trigger="intersect once" hx-swap="outerHTML">načítám…</div>
+	</details>
+}
+
+templ Members(list []obce.Obec) {
+	<ol class="member-list">
+		for _, o := range list {
+			<li>{ o.Label() }</li>
+		}
+	</ol>
+}
+
+func fmtInt(v float64) string {
+	s := fmt.Sprintf("%.0f", v)
+	var b strings.Builder
+	for i, r := range s {
+		if i > 0 && (len(s)-i)%3 == 0 {
+			b.WriteString(" ")
+		}
+		b.WriteRune(r)
+	}
+	return b.String()
+}
+
+func token(sel []obce.Resolved) string {
+	items := make([]obce.Item, len(sel))
+	for i, s := range sel {
+		items[i] = s.Item
+	}
+	return obce.FormatSelection(items)
+}
+
+func obecURL(id int, sel []obce.Resolved, page string) templ.SafeURL {
+	return templ.SafeURL(fmt.Sprintf("/obec/%d/%s/%s", id, token(sel), page))
+}
+
+func members(r obce.Resolved) string {
+	if r.Kind == 'o' {
+		return "obec"
+	}
+	return obce.ObceCount(r.Members)
+}

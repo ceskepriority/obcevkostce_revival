@@ -61,6 +61,8 @@ def run(args, cfg: Config) -> int:
             client.close()
         with connect(cfg) as conn:
             geography.load(conn, directory)
+            # group membership changed: group aggregates (and size bands) follow
+            conn.execute("SELECT refresh_current_observation()")
         return 0
 
     if cmd == "indicators":

@@ -1,0 +1,62 @@
+{
+  "id": "migrace-vek",
+  "data": "migrace-vek.csv",
+  "type": "bar",
+  "title": "Čistá migrace podle věku",
+  "subtitle": "Přistěhovalí − vystěhovalí v hlavních věkových skupinách",
+  "aes": [
+    {
+      "type": "x",
+      "field": "rok",
+      "label": "Rok",
+      "format": "year"
+    },
+    {
+      "type": "y",
+      "field": "osoby",
+      "label": "Saldo",
+      "unit": "os.",
+      "tab": "abs"
+    },
+    {
+      "type": "y",
+      "field": "podil",
+      "label": "Saldo",
+      "format": "percent",
+      "tab": "pct"
+    },
+    {
+      "type": "fill",
+      "field": "skupina",
+      "label": "Věková skupina"
+    }
+  ],
+  "source": [
+    {
+      "name": "ČSÚ",
+      "dataset": "Stěhování podle základních a pětiletých věkových skupin (OBY06A, zveřejněno 19. 06. 2026)",
+      "url": "https://data.csu.gov.cz/datastat/info/SADA/OBY06A"
+    }
+  ],
+  "data_note": "Podíl = saldo věkové skupiny / všichni obyvatelé k 1. 7., takže sloupec dává celkovou míru čisté migrace.",
+  "options": {
+    "timeline": false,
+    "palette": [
+      "#6250d6",
+      "#eb6834",
+      "#0f9aa8"
+    ]
+  },
+  "last_updated": "2026-11-20",
+  "rows": 78,
+  "tabs": [
+    {
+      "id": "abs",
+      "label": "Osoby"
+    },
+    {
+      "id": "pct",
+      "label": "% obyvatel"
+    }
+  ]
+}
